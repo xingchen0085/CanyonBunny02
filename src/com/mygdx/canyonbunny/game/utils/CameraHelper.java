@@ -74,4 +74,8 @@ public class CameraHelper {
     public void setTarget(Sprite target) {
         this.target = target;
     }
+
+    public void addZoom(float num) {
+        setZoom(zoom + num);
+    }
 }

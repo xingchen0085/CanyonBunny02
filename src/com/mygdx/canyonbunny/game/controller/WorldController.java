@@ -3,6 +3,7 @@ package com.mygdx.canyonbunny.game.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -59,38 +60,67 @@ public class WorldController extends InputAdapter {
     /**
      * 事件处理
      *
-     * @param deldaTime
+     * @param deltaTime
      */
-    private void resovleEventListener(float deldaTime) {
+    private void resovleEventListener(float deltaTime) {
+
+        //对象控制
         float x = sprite.getX();
         float y = sprite.getY();
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            Gdx.app.log(TAG, "X=" + x);
             if (x <= 0) {
                 return;
             }
-            moveSprite(sprite, new Vector2(-5.0f * deldaTime, 0));
+            moveSprite(sprite, new Vector2(-5.0f * deltaTime, 0));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            Gdx.app.log(TAG, "X=" + x);
             if (x >= Constants.WINDOW_WIDTH - 1) {
                 return;
             }
-            moveSprite(sprite, new Vector2(5.0f * deldaTime, 0));
+            moveSprite(sprite, new Vector2(5.0f * deltaTime, 0));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            Gdx.app.log(TAG, "Y=" + y);
             if (y >= Constants.WINDOW_HEIGHT - 1) {
                 return;
             }
-            moveSprite(sprite, new Vector2(0, 5.0f * deldaTime));
+            moveSprite(sprite, new Vector2(0, 5.0f * deltaTime));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            Gdx.app.log(TAG, "Y=" + y);
             if (y <= 0) {
                 return;
             }
-            moveSprite(sprite, new Vector2(0, -5.0f * deldaTime));
+            moveSprite(sprite, new Vector2(0, -5.0f * deltaTime));
+        }
+
+        //相机控制
+        float camMoveSpeed = 5 * deltaTime;
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            camMoveSpeed *= 5;//加快 5 倍速度
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            moveCamera(new Vector2(0, camMoveSpeed));
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            moveCamera(new Vector2(0, -camMoveSpeed));
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            moveCamera(new Vector2(-camMoveSpeed, 0));
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            moveCamera(new Vector2(camMoveSpeed, 0));
+        }
+        float camZoomSpeed = 1 * deltaTime;
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            camZoomSpeed *= 5;//加快 5 倍速度
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.COMMA)) {
+            cameraHelper.addZoom(camMoveSpeed);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.PERIOD)) {
+            cameraHelper.addZoom(-camMoveSpeed);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SLASH)) {
+            cameraHelper.setZoom(1);
         }
     }
 
@@ -122,9 +152,13 @@ public class WorldController extends InputAdapter {
      * @param translate
      */
     private void moveSprite(Sprite sprite, Vector2 translate) {
-        if (sprite != null) {
+        if (null != sprite) {
             sprite.translate(translate.x, translate.y);
         }
+    }
+
+    private void moveCamera(Vector2 translate) {
+        cameraHelper.setPosition(cameraHelper.getPosition().x + translate.x, cameraHelper.getPosition().y + translate.y);
     }
 
     private Sprite initPixMap() {
