@@ -10,6 +10,9 @@ import com.mygdx.canyonbunny.game.utils.Constants;
  */
 public class CanyonBunnyLaunch {
     public static void main(String[] args){
+        //纹理打包
+
+
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.width = Constants.WINDOW_WIDTH;
         config.height = Constants.WINDOW_HEIGHT;

@@ -180,6 +180,8 @@ public class WorldController extends InputAdapter {
         pixmap.drawRectangle(0, 0, width, height);
 
         Texture texture = new Texture(pixmap);
+        //平滑纹里
+        texture.setFilter(Texture.TextureFilter.Linear,Texture.TextureFilter.Linear);
         sprite = new Sprite(texture);
         sprite.setSize(1, 1);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
