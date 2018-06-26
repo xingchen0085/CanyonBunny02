@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.canyonbunny.game.utils.CameraHelper;
 import com.mygdx.canyonbunny.game.utils.Constants;
@@ -21,6 +22,7 @@ public class WorldController extends InputAdapter {
     private Sprite sprite;
     private Sprite rock;//地
     private boolean isMove;
+    Sprite banana;
 
     public WorldController() {
         init();
@@ -36,6 +38,14 @@ public class WorldController extends InputAdapter {
         rock = iniRockPixMap();
         sprite = initPixMap();
         isMove = false;
+
+        //测试相机的纹理包
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("images/test/atlas/raw.atlas"));
+        //找出香蕉
+        banana = atlas.createSprite("banana");
+        banana.setSize(2,2);
+        banana.setOriginCenter();//原点居中
+        banana.setPosition(2,2);
     }
 
     /**
@@ -208,6 +218,10 @@ public class WorldController extends InputAdapter {
 
     public Sprite getRock() {
         return rock;
+    }
+
+    public Sprite getBanana() {
+        return banana;
     }
 
     public CameraHelper getCameraHelper() {

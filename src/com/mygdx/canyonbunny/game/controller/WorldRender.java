@@ -57,6 +57,10 @@ public class WorldRender implements MediaDisposer.Disposable {
             sprite.draw(spriteBatch);
         }
 
+        Sprite banana = worldController.getBanana();
+        if(null != banana){
+            banana.draw(spriteBatch);
+        }
         spriteBatch.end();
     }
 
